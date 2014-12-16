@@ -1,0 +1,34 @@
+#puzzle { 
+    width:730px; 
+    padding:5px; 
+    margin:auto; 
+    border:1px solid #aaa; 
+    border-radius:5px; 
+    background-color:#eee; 
+    overflow: auto;
+}
+#puzzle figure { 
+    width:510px; 
+    height:676px; 
+    border:1px 
+    solid #aaa; 
+    position:relative; 
+    float:left; 
+    background-color:#fff; 
+}
+#puzzle figure img{
+	width:510px; 
+	height:676px;	
+}
+#ui { 
+	padding:10px 0 0 10px; 
+	width:204px;
+	float:left; 
+}
+#ui button { margin-bottom: 2em; }
+#ui p { font-size:1.1em; }
+#start { 
+	width:204px; 
+	height:50px; 
+	font-size:1.75em; 
+}

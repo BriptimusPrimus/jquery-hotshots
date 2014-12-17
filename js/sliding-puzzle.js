@@ -58,9 +58,12 @@ var numberOfPieces = 12,
 	// Removing the first item in the positions array
 	positions.shift();
 
+
 	// Shuffling the pieces randomly
 	$("#start").on("click", function(e){
 		var pieces = imgContainer.children();
+		var monitor = true,
+			switcher = true;
 
 		function shuffle(array) {
 			var i = array.length;
@@ -78,16 +81,84 @@ var numberOfPieces = 12,
 			}
 		}
 
-		//shuffle(pieces);
+		function shuffle2(array) {
+			var i = array.length;
 
-		$.each(pieces, function(i){
-			pieces.eq(i).css(positions[i]);
-		});
+			if(i === 0) {
+				return false;
+			}
 
-		pieces.appendTo(imgContainer);
+			var swapsCount = 0;				
 
-		empty.top = 0;
-		empty.left = 0;
+			function trySwapping(){
+
+				var neighbour = false,
+					randomeElm;
+
+				while(!neighbour){
+					var j = Math.floor(Math.random() * (i));
+					
+					randomeElm = $(array[j]);
+
+					// console.log(randomeElm);
+
+					var current = getPosition(randomeElm);
+
+					// is it horizontally or vertically aligned to the empty space?
+					if (current.left === empty.left || current.top === empty.top){
+						neighbour = true;
+						// is it adjacent  to the empty space?
+						if (current.bottom < empty.top || 
+						    current.top > empty.bottom ||
+						    current.left > empty.right || 
+						    current.right < empty.left) {
+								neighbour = false;		    	
+						    }					
+					}
+				}
+
+				//swap positions
+				var tempPos = {};
+			    tempPos.top = current.top;
+			    tempPos.left = current.left;
+
+			    randomeElm.css({
+					top: empty.top,
+					left: empty.left
+				});
+
+			    empty.top = tempPos.top;
+			    empty.left = tempPos.left;
+			    empty.bottom = tempPos.top + pieceH;
+			    empty.right = tempPos.left + pieceW;
+
+				swapsCount++; console.log("swapped!" + swapsCount);
+
+				if (swapsCount < 100){
+					setTimeout(trySwapping, 100);
+				} else {
+					// stop waiting
+					monitor = false;
+				}
+
+			}
+
+			trySwapping();
+		}		
+
+		shuffle2(pieces);
+
+		// wait until all the shuffling is done
+		// while(monitor){ switcher = !switcher; }
+
+		// $.each(pieces, function(i){
+		// 	pieces.eq(i).css(positions[i]);
+		// });
+
+		// pieces.appendTo(imgContainer);
+
+		// empty.top = 0;
+		// empty.left = 0;
 
 		container.find("#ui").find("p").not("#time").remove();
 

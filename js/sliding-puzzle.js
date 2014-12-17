@@ -100,8 +100,6 @@ var numberOfPieces = 12,
 					
 					randomeElm = $(array[j]);
 
-					// console.log(randomeElm);
-
 					var current = getPosition(randomeElm);
 
 					// is it horizontally or vertically aligned to the empty space?
@@ -138,7 +136,7 @@ var numberOfPieces = 12,
 					setTimeout(trySwapping, 100);
 				} else {
 					// stop waiting
-					monitor = false;
+					start(array);
 				}
 
 			}
@@ -158,7 +156,21 @@ var numberOfPieces = 12,
 		// pieces.appendTo(imgContainer);
 
 		// empty.top = 0;
-		// empty.left = 0;
+		// empty.left = 0;		
+	});
+
+
+	function getPosition(el) {
+	    return {
+	        top: parseInt(el.css("top")),
+	        bottom: parseInt(el.css("top")) + pieceH,
+	        left: parseInt(el.css("left")),
+	        right: parseInt(el.css("left")) + pieceW
+	    }
+	}
+
+
+	function start(pieces){
 
 		container.find("#ui").find("p").not("#time").remove();
 
@@ -329,16 +341,7 @@ var numberOfPieces = 12,
 		    }
 		});
 
-		function getPosition(el) {
-		    return {
-		        top: parseInt(el.css("top")),
-		        bottom: parseInt(el.css("top")) + pieceH,
-		        left: parseInt(el.css("left")),
-		        right: parseInt(el.css("left")) + pieceW
-		    }
-		}
-
-	});
+	}
 
 
 });

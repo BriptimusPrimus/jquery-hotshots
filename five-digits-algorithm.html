@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <link rel="stylesheet" href="css/common.css" />
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        	function isInside(n,arr){
+        		for (var i = 0; i < arr.length; i++){
+        			if(n===arr[i]){
+        				return true;
+        			}
+        		}	
+        		return false;
+        	}
+
+        	function printArray(arr){
+        		var c = "";
+        		for (var i = 0; i < arr.length; i++){
+        			c += arr[i];
+        		}
+        		console.log(c);        		
+        	}
+
+        	function evaluate(arr){
+				printArray(arr);
+        		
+        		var str = "";
+        		for (var i = 0; i < arr.length - 1; i++){
+        			str += arr[i]; 
+        		}
+        		var prod = arr[4] * str;
+        		str = str.split("").reverse().join(""); 
+        		console.log(" -> " + str + " = " + prod);
+        		return prod == str;
+        	}     		
+
+        	function combine(){
+	        	
+	        	var digs = [0,1,2,3,4,5,6,7,8,9];
+	        	var solved = false;
+        		var result = [];
+
+	        	for (var i = 1; i < digs.length; i++) {	        		
+	        		result.push(digs[i]);
+	        		//console.log("i=" + i);
+
+	        		var j = 0;
+	        		while (j < digs.length && !solved) {
+	        			if(!isInside(digs[j], result)){
+	        				result.push(digs[j]);
+	        				//console.log("j=" + j);
+
+	        				var k = 0;
+	        				while (k < digs.length && !solved){
+	        					if(!isInside(digs[k], result)){
+	        						result.push(digs[k]);
+	        						//console.log("k=" + k);
+
+	        						var l = 0;
+	        						while (l < digs.length && !solved){
+	        							if(!isInside(digs[l], result)){
+	        								result.push(digs[l]);
+	        								//console.log("l=" + l);
+
+	        								var m = 0;
+	        								while(m < digs.length && !solved){
+	        									if(!isInside(digs[m], result)){
+	        										result.push(m);
+	        										//console.log("m=" + m);
+	        										if(solved = evaluate(result)){				
+	        											console.log("eureka!");
+	        											printArray(result);printArray(result);printArray(result);printArray(result);printArray(result);printArray(result);printArray(result);
+	        											return result;
+	        										}
+	        									}
+	        									result.splice(4);
+	        									m++;
+	        								}
+	        							}
+	        							result.splice(3);
+	        							l++;
+	        						}
+	        					}
+	        					result.splice(2);
+	        					k++;
+	        				}
+
+	        			}
+	        			result.splice(1);
+	        			j++;
+	        		}
+	        		result = [];
+	        	};
+
+			}
+
+			var r = combine();
+			console.log("eureka!");
+			printArray(r);
+
+
+        </script>
+    </body>
+</html>

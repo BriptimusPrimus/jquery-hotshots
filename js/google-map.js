@@ -180,13 +180,14 @@ $(function () {
 					desc.clone().text(distanceString).appendTo(list);
 					term.clone().text("Distance cost:").appendTo(list);
 					desc.clone().text("£" + distanceCost).appendTo(list);
-					term.clone().text("Weight cost:")
-					            .appendTo(list);
-
-					desc.clone().text("£" + weightCost).appendTo(list); term.clone().addClass("total").text("Total:").appendTo(list);
+					term.clone().text("Weight cost:").appendTo(list);
+					desc.clone().text("£" + weightCost).appendTo(list); 
+					term.clone().addClass("total")
+						.text("Total:")
+						.appendTo(list);
 					desc.clone().addClass("total")
-					            .text("£" + totalCost)
-					            .appendTo(list);
+						.text("£" + totalCost)
+						.appendTo(list);
 
 					list.appendTo(ui);				    
 			});

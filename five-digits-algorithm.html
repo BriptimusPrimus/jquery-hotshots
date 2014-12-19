@@ -50,31 +50,31 @@
 	        		//console.log("i=" + i);
 
 	        		var j = 0;
-	        		while (j < digs.length && !solved) {
+	        		while (j < digs.length) {
 	        			if(!isInside(digs[j], result)){
 	        				result.push(digs[j]);
 	        				//console.log("j=" + j);
 
 	        				var k = 0;
-	        				while (k < digs.length && !solved){
+	        				while (k < digs.length){
 	        					if(!isInside(digs[k], result)){
 	        						result.push(digs[k]);
 	        						//console.log("k=" + k);
 
 	        						var l = 0;
-	        						while (l < digs.length && !solved){
+	        						while (l < digs.length){
 	        							if(!isInside(digs[l], result)){
 	        								result.push(digs[l]);
 	        								//console.log("l=" + l);
 
 	        								var m = 0;
-	        								while(m < digs.length && !solved){
+	        								while(m < digs.length){
 	        									if(!isInside(digs[m], result)){
 	        										result.push(m);
 	        										//console.log("m=" + m);
 	        										if(solved = evaluate(result)){				
 	        											console.log("eureka!");
-	        											printArray(result);printArray(result);printArray(result);printArray(result);printArray(result);printArray(result);printArray(result);
+	        											printArray(result);printArray(result);printArray(result);
 	        											return result;
 	        										}
 	        									}

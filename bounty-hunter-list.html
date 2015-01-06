@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>My Page</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<link rel="stylesheet" href="css/bounty-hunter.css" />
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	<script src="http://borismoore.github.com/jsrender/jsrender.js"></script>
+	<script src="js/bounty-hunter.js"></script>
+</head> 
+<body> 
+
+<div data-role="page" id="list">
+	<div data-role="header">
+
+	    <a href="bounty-hunter.html" data-icon="home" 
+	    data-shadow="false" data-iconpos="notext" 
+	    data-transition="slide" data-direction="reverse" 
+	    title="Home"></a>
+
+	    <h1>Active Bounties</h1>
+	</div>
+
+	<div data-role="content">
+
+	</div>
+
+	<div data-role="footer" data-position="fixed" data-id="footer">
+
+	    <small>&copy; 2012 Some Company Inc.</small>
+	    <a href="bounty-hunter-about.html" data-icon="info" 
+	        data-role="button" data-transition="slide">About</a>
+
+	</div>
+
+	<script id="listTemplate" type="text/x-jquery-tmpl">
+	    <ul data-role="listview">
+
+	        {{for items}}
+	            <li data-shadow="false" data-icon="arrow-r" 
+	            data-iconpos="right">
+
+	                <a href="#" id="item-{{:#index}}">
+	                    <div class="bounty">
+	                        <span>+{{:bounty_amount}}</span>
+	                        <span class="expires">Expires on: 
+	                            <span class="value">
+	                                {{:bounty_closes_date}}
+	                            </span>
+	                        </span>
+	                    </div>
+	                    <h1 class="title">{{:title}}</h1>
+	                    <div class="meta">
+	                        <span>Answers: 
+	                            <span class="value">
+	                                {{:answer_count}}
+	                            </span>
+	                        </span>
+	                        <span class="activity">
+	                            Last activity on: 
+	                            <span class="value">
+	                                {{:last_activity_date}}
+	                            </span>
+	                        </span> 
+	                    </div>
+	                </a>
+	            </li>
+	        {{/for}}
+	    </ul>
+	</script>	
+
+</div><!-- /page -->
+
+</body>
+</html>

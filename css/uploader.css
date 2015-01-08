@@ -48,3 +48,8 @@ article.up input { display:none; }
 }
 .txt { background:url(../img/txt.png) no-repeat 0 50%; }
 .zip { background:url(../img/zip.png) no-repeat 0 50%; }
+
+
+.up-progress { 
+    height:1em; width:100px; position:relative; top:4px; 
+}

@@ -129,7 +129,14 @@
                     removeAll();
                 } 
             }
-        });        
+        });
+
+        //upload selected files
+        widget.el.on("click", "a.up-upload", function(e) {
+            e.preventDefault();
+
+            widget.uploadFiles();
+        });                 
 
     }
 
@@ -208,7 +215,89 @@
         if (!container.find("table").length) {
             table.appendTo(container);
         }
-    }        
+
+        //initialise progress bars
+        widget.initProgress();
+    }
+
+    //create progressbars
+    Up.prototype.initProgress = function() {
+      
+        this.el.find("div.up-progress").each(function() {
+            var el = $(this);
+
+            if (!el.hasClass("ui-progressbar")) {
+                el.progressbar();
+            }
+        });
+    }    
+
+    //update progressbar
+    Up.prototype.handleProgress = function(e, progress) {
+      
+        var complete = Math.round((e.loaded / e.total) * 100);
+
+        progress.progressbar("value", complete);
+    }            
+
+    Up.prototype.uploadFiles = function() {
+        var widget = this,
+            a = widget.el.find("a.up-upload");
+
+        //don't do it if disabled
+        if (!a.hasClass("disabled")) {
+
+            //disable upload button
+            a.addClass("disabled");
+
+            //add each file to FormData 
+            $.each(widget.fileList, function(i, file) {
+                var fd = new FormData(),
+                      prog = widget.el
+                                .find("div.up-progress")
+                                .eq(i);
+          
+                fd.append("file-" + i, file);
+
+                widget.allXHR.push($.ajax({
+                    type: "POST",
+                    url: "/upload.asmx/uploadFile",
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    xhr: function() {
+              
+                        //add progress handler
+                        var xhr = jQuery.ajaxSettings.xhr();
+              
+                        if (xhr.upload) {
+                            xhr.upload.onprogress = function(e) {
+                                widget.handleProgress(e, prog);
+                            }
+                        }
+
+                        return xhr;
+                    }
+                }).done(function() {
+  
+                    //show confirmation message
+                    var parent = prog.parent(),
+                        prev = parent.prev();
+
+                    prev.add(parent).empty();
+                    prev.text("File uploaded!");
+                }));
+            });
+
+            //clear table when all uploads complete
+            $.when.apply($, widget.allXHR).done(function() {
+                widget.el.find("table").remove();
+
+                //re-enable upload button
+                widget.el.find("a.up-upload").removeClass("disabled");
+            });                 
+        }
+    }
 
     $.fn.up = function(options) {
         new Up(this, options).init();

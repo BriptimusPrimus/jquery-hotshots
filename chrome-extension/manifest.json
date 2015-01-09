@@ -13,5 +13,8 @@
         "matches": ["*://*/*"],
         "css": ["content.css"],
         "js": ["jquery-2.1.1.min.js", "content.js"]
-    }]
+    }],
+    "background": {
+        "scripts": ["jquery-2.1.1.min.js", "background.js"]
+    }    
 }

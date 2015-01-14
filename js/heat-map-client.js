@@ -50,4 +50,57 @@ $(function () {
 	    url: "/heat-map.asmx/saveLayouts",
 	    data: JSON.stringify({ url: url, layouts: layouts })
 	});
+
+
+	$.imagesLoaded(function() {
+
+		//capture clicks
+	    doc.on("click.jqHeat", function (e) {
+
+	    	//build data for click
+	        var x = e.pageX,
+	            y = e.pageY,
+	            docWidth = doc.outerWidth(),
+	            docHeight = doc.outerHeight(),
+	            layout,
+	            click = {
+	                url: url,
+	                x: Math.ceil((x / docWidth) * 100),
+	                y: Math.ceil((y / docHeight) * 100)
+	            };
+
+	        //determine which layout we are in
+	        $.each(layouts, function (i, item) {
+
+	            var min = item.min || 0,
+	                max = item.max || docWidth,
+	                bp = i + 1;
+
+	            if (docWidth >= min && docWidth <= max) {
+	                click.layout = bp;
+	            } else if (docWidth > max) {
+	                click.layout = bp + 1;
+	            }
+	        });
+
+	        //add to clickStats object
+	        clickStats.clicks.push(click);
+	    });
+
+	});	
+
+	//handle leaving the page
+	window.onbeforeunload = function () {
+
+		//send to server for storage
+	    $.ajax({
+	        async: false,
+	        type: "POST",
+	        contentType: "application/json",
+	        url: "/heat-map.asmx/saveClicks",
+	        dataType: "json",
+	        data: JSON.stringify({ clicks: clicks })
+	    });
+	}	
+	
 });

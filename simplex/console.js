@@ -1,4 +1,4 @@
-﻿$(function () {
+$(function () {
 
     var doc = $(document),
         input = doc.find("#url"),
@@ -211,8 +211,8 @@
             newCanvas.width = width;
 
             //set heights
-            loadedHeight = $("html", 
-                iframe[0].contentDocument).outerHeight();
+            loadedHeight = $("html", iframe[0].contentDocument)
+                .outerHeight();
 
             section.height(loadedHeight);
             newCanvas.height = loadedHeight;
@@ -221,8 +221,8 @@
             canvas = newCanvas;
 
             //trigger canvasready event
-            $(newCanvas).appendTo(section).trigger("canvasready", 
-                { clicks: clicks });
+            $(newCanvas).appendTo(section)
+                .trigger("canvasready", { clicks: clicks });
         });
     });              
 

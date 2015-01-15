@@ -32,7 +32,7 @@
 			        <td colspan="5">
 			            <div id="paging" class="clearfix">
 			                <label for="perPage">Items per page:</label>
-			                <select id="perPage" data-bind="value: pageSize">
+			                <select id="perPage" data-bind="value: pageSize, event: { change: goToFirstPage }">
 			                    <option value="10">10</option>
 			                    <option value="30">30</option>
 			                    <option value="all">All</option>
@@ -45,7 +45,14 @@
 								    </li>
 								</ul>
 							    <a href="#" title="Next page" data-bind="click: goToNextPage">&raquo;</a>
-							</nav>			                
+							</nav>
+							<div class="filter clearfix">
+							    <label for="states">Filter by:</label>
+							    <select id="states" data-bind="foreach: states, event: { change: filterStates }">
+							        <option data-bind="value: state, text: state">
+							        </option>
+							    </select>
+							</div>               
 			            </div>
 			        </td>
 			    </tr>

@@ -10,8 +10,10 @@ $(function () {
 		discoveredOrder: ko.observable("ascending"),  
 		pageSize: ko.observable(10),
 		currentPage: ko.observable(0),
-		elementsPaged: ko.observableArray(),	
-		pages: ko.observableArray(),	      
+		elementsPaged: ko.observableArray(),
+		pages: ko.observableArray(),   
+		states: ko.observableArray(),
+		originalElements: null,
 
 		//methods
 		sort: function (viewmodel, e) {
@@ -73,7 +75,76 @@ $(function () {
 		        newPage = parseInt(el.text(), 10) - 1;
 
 		    vm.currentPage(newPage);
-		}					
+		},
+
+		manageClasses: function () {
+		    var nav = $("#paging").find("nav"),
+		        currentpage = this.currentPage();
+
+		    nav.find("a.active")
+		       .removeClass("active")
+		       .end()
+		       .find("a.disabled")
+		       .removeClass("disabled"); 
+
+		    if (currentpage === 0) {
+		       nav.children(":first-child").addClass("disabled");
+		    } else if (currentpage === this.totalPages() - 1) {
+		        nav.children(":last-child").addClass("disabled");
+		    }
+
+		    $("#pages").find("a")
+		               .eq(currentpage)
+		               .addClass("active");
+		},
+
+		goToFirstPage: function () {
+		    this.currentPage(0);
+		},
+
+		filterStates: function (obj, e) {
+
+		    if (e.originalEvent.target.selectedIndex !== 0) {
+
+		    	//build array containing only elements with matching state
+		        var vm = this,
+		            tmpArr = [],
+		            state = e.originalEvent.target.value;
+
+		        //store original elements
+		        vm.originalElements = vm.elements();
+
+		        $.each(vm.elements(), function (i, item) {
+		            if (item.state === state) {
+		                tmpArr.push(item);
+		            }
+		        });
+
+		        //update elements array
+		        vm.elements(tmpArr).currentPage(0);
+
+		        //replace select box with filter label
+		        var label = $("<span/>", {
+		            "class": "filter-label",
+		            text: state
+		        });
+		        $("<a/>", {
+		            text: "x",
+		            href: "#",
+		            title: "Remove this filter"
+		        }).appendTo(label).on("click", function () {
+
+		            $(this).parent().remove();
+		            $("#states").show().prop("selectedIndex", 0);
+
+		            //add original elements back to elements array
+		            vm.elements(vm.originalElements).currentPage(0);
+
+		        });
+
+		        label.insertBefore("#states").next().hide();
+		    }
+		}										
 			
     };
 
@@ -87,7 +158,8 @@ $(function () {
 	            startIndex = pagesize * this.currentPage(),
 	            endIndex = startIndex + pagesize;
 
-	        this.elementsPaged(this.elements.slice(startIndex,endIndex));
+	        this.elementsPaged(this.elements.slice(startIndex,endIndex))
+	        	.manageClasses();
 	    }
 
 	}, vm); 
@@ -100,10 +172,35 @@ $(function () {
 	        tmp.push({ num: x + 1 });
 	    }
 
-	    this.pages(tmp);
+	    this.pages(tmp).manageClasses();
 
 	}, vm);	   
 
     ko.applyBindings(vm);
+
+    //add initial classes
+    vm.manageClasses();
+
+    //create array contining unique states
+	var tmpArr = [],
+	    refObj = {};
+
+	//add initial option
+	tmpArr.push({ state: "Filter by..." });
+
+	$.each(vm.elements(), function(i, item) {
+
+	    var state = item.state;
+
+	    //if refrence object doesn't contain state, add it
+	    if (!refObj.hasOwnProperty(state)) {
+
+	        var tmpObj = {state: state};
+	        refObj[state] = state;
+	        tmpArr.push(tmpObj);
+	    }
+	});
+
+	vm.states(tmpArr);    
 
 });
